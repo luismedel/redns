@@ -22,6 +22,7 @@ A simple, regex-ready and scriptable authoritatibe DNS server for toying, testin
 ## License
 
 Written by Luis Medel, Percibe Information Security.
+
 Copyright (c) 2021, [Percibe S.L.](https://percibe.net)
 All rights reserved.
 
