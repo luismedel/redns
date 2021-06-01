@@ -26,7 +26,7 @@ Written by Luis Medel, Percibe Information Security.
 Copyright (c) 2021, [Percibe S.L.](https://percibe.net)
 All rights reserved.
 
-This program is released under a 3-clause BSD license. For more detail see the LICENSE file.
+This program is released under a 3-clause BSD license. For more detail see the LICENSE.md file.
 
 ## Usage
 
