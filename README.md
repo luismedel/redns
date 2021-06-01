@@ -106,7 +106,7 @@ mail3           IN  A       192.0.2.5		; IPv4 address for mail3.example.com
 
 ### Non-standard zones 🧙🏼‍♂️
 
-This is where the magix of redns happens.
+This is where the magic of redns happens.
 
 #### Dynamic record matching
 
