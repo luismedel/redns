@@ -1,7 +1,7 @@
 ﻿/**
  * 
  * This file is part of redns. A simple, regex-ready and scriptable
- * authoritatibe DNS server for toying, testing and red teaming.
+ * authoritative DNS server for toying, testing and red teaming.
  * 
  * Written by Luis Medel, Percibe Information Security.
  * 

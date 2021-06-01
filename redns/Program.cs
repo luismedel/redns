@@ -6,7 +6,7 @@
  * /_/   \___/\__,_/_/ /_/____/ 
  * 
  * This file is part of redns. A simple, regex-ready and scriptable
- * authoritatibe DNS server for toying, testing and red teaming.
+ * authoritative DNS server for toying, testing and red teaming.
  * 
  * Written by Luis Medel, Percibe Information Security.
  * 
@@ -37,7 +37,7 @@ namespace redns
 
             Console.WriteLine (@"
 
-redns - A simple, regex-ready and scriptable authoritatibe DNS server for
+redns - A simple, regex-ready and scriptable authoritative DNS server for
         toying, testing and red teaming
 
 Usage:

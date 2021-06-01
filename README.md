@@ -1,6 +1,6 @@
 ﻿# redns
 
-A simple, regex-ready and scriptable authoritatibe DNS server for toying, testing and red teaming.
+A simple, regex-ready and scriptable authoritative DNS server for toying, testing and red teaming.
 
 **Features:**
 * Almost fully compatible with standard BIND zone files as defined in [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035).
