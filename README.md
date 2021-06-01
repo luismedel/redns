@@ -22,10 +22,11 @@ A simple, regex-ready and scriptable authoritative DNS server for toying, testin
 ## License
 
 Written by Luis Medel, Percibe Information Security.
+
 Copyright (c) 2021, [Percibe S.L.](https://percibe.net)
 All rights reserved.
 
-This program is released under a 3-clause BSD license. For more detail see the LICENSE file.
+This program is released under a 3-clause BSD license. For more detail see the LICENSE.md file.
 
 ## Usage
 
@@ -106,7 +107,7 @@ mail3           IN  A       192.0.2.5		; IPv4 address for mail3.example.com
 
 ### Non-standard zones 🧙🏼‍♂️
 
-This is where the magix of redns happens.
+This is where the magic of redns happens.
 
 #### Dynamic record matching
 
