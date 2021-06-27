@@ -76,7 +76,7 @@ redns tries to be fully compatible with standard BIND zone files. Nevertheless, 
 
 You can feed redns with any standard zone file. For example:
 
-```console
+```zone
 $ORIGIN example.com.	; Designates the start of this zone file
 
 $TTL 3600		; Default expiration time (in seconds) of all RRs
