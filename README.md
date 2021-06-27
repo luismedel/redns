@@ -172,7 +172,7 @@ You can alter the response type within Lua (not all DNS clients support this, th
 ```zone
 subdomain2      IN  A       <?lua
                                 responseType = "TXT"
-                                return "I'm was an A record, but I switched to TXT!"
+                                return "I was an A record, but I switched to TXT!"
                             ?>
 ```
 > FYI, there are 4 globals available for Lua scripts to use:
