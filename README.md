@@ -177,11 +177,11 @@ subdomain2      IN  A       <?lua
 ```
 > FYI, there are 4 globals available for Lua scripts to use:
 >```console
-> remoteAddress:	Client address (read only string) (e.g.: "192.168.2.4")
-> remotePort:		Remote port (read only int)
-> requestName:		Request (read only string) (e.g.: "mail.example.com")
-> responseType:		Response type (read/write string) ("A", "AAAA", "NS", "MX", etc.)
-> 	 		Setted by default to the apporpiate response type in each call.
+> remoteAddress:Client address (read only string) (e.g.: "192.168.2.4")
+> remotePort:	Remote port (read only int)
+> requestName:	Request (read only string) (e.g.: "mail.example.com")
+> responseType:	Response type (read/write string) ("A", "AAAA", "NS", "MX", etc.)
+> 	 	Setted by default to the apporpiate response type in each call.
 > ```
 
 #### Best of both worlds
