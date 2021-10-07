@@ -84,6 +84,7 @@ Call redns without arguments to start the default server:
 
             if (!SimpleOpts.ExistsOpt (args, "--nobanner"))
             {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine ($@"
                   __          
    ________  ____/ /___  _____
@@ -91,11 +92,12 @@ Call redns without arguments to start the default server:
  / /  /  __/ /_/ / / / (__  ) 
 /_/   \___/\__,_/_/ /_/____/  v{VERSION}
 ");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
 
             if (args.Length == 0)
             {
-                System.Diagnostics.Trace.Listeners.Add (new System.Diagnostics.TextWriterTraceListener (Console.Out));
+                System.Diagnostics.Trace.Listeners.Add (new ConsoleTraceListener ());
                 Log.Info ("Starting default server...");
 
                 host.Zones.Add (Zone.FromFile (@"zone.conf"));
