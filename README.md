@@ -1,4 +1,4 @@
-﻿# redns
+# redns
 
 A simple, regex-ready and scriptable authoritative DNS server for toying, testing and red teaming.
 
@@ -76,7 +76,7 @@ redns tries to be fully compatible with standard BIND zone files. Nevertheless, 
 
 You can feed redns with any standard zone file. For example:
 
-```console
+```zone
 $ORIGIN example.com.	; Designates the start of this zone file
 
 $TTL 3600		; Default expiration time (in seconds) of all RRs
@@ -115,43 +115,43 @@ redns supports regex based dynamic record matching. Simply define your record as
 
 The next record matches any query starting with 'info' followed by digits (ie: info1.example.com, info999.example.com, info123456.example.com, info314159.example.com, etc.)
 
-```
+```zone
 /^info\d+/      IN  A       192.0.2.6
 ```
 
 > Note you can use any special char and anchor in your regex. Simply be aware that at runtime this:
 >
->```
+>```regex
 >/^info\d+/
 >```
 >will be expanded using the zone origin. So, anchors like $ (end of text) won't be valid.
 >
 >In our example: 
->```
+>```regex
 >/^info\d+\.example\.com/
 >```
 
 #### Dynamic record responses using Lua scripts
 
-You can return a custom response using Lua scripts. We use a (in our humble opinion) more sane syntax than [PowerDNS'](https://powerdns.com). This syntax allows to add several scripting engines to the server (ie: <?js, <?shell, etc.):
+You can return a custom response using Lua scripts. We use a (in our humble opinion) saner syntax than [PowerDNS'](https://powerdns.com) one. This syntax allows to add several scripting engines to the server (ie: <?js, <?shell, etc.):
 
 Let's return an boring IPv4 for an A record.
 
-```
+```zone
 subdomain       IN  A       <?lua
                                 return "192.168.2.7"
                             ?>
 ```
 
 You can return more than one value, if allowed by the record type.
-```
+```zone
 subdomain       IN  NS      <?lua
                                 return "192.0.2.2", "192.0.2.3"
                             ?>
 ```
 
 If the record type expects more than one value (like in MX records, for example) you can use a table. Only remember to use the same order you would use in a zone file:
-```
+```zone
 example.com.    IN  MX      <?lua
 				-- MX => priority, hostname
                                 return { 10, "mail.example.com." }
@@ -159,7 +159,7 @@ example.com.    IN  MX      <?lua
 ```
 
 A more complete MX output for example.com could be this:
-```
+```zone
 example.com.    IN  MX      <?lua
                                 return { 10, "mail.example.com." },
                                        { 20, "mail2.example.com." },
@@ -169,25 +169,25 @@ example.com.    IN  MX      <?lua
 
 You can alter the response type within Lua (not all DNS clients support this, though). For example, lets change from A to TXT:
 
-```
+```zone
 subdomain2      IN  A       <?lua
                                 responseType = "TXT"
-                                return "I'm was an A record, but I switched to TXT!"
+                                return "I was an A record, but I switched to TXT!"
                             ?>
 ```
 > FYI, there are 4 globals available for Lua scripts to use:
->```
->remoteAddress:	Client address (read only string) (e.g.: "192.168.2.4")
-> remotePort:	Remote port (read only int)
-> requestName:	Request (read only string) (e.g.: "mail.example.com")
-> responseType:	Response type (read/write string) ("A", "AAAA", "NS", "MX", etc.)
-> 	 	Setted by default to the apporpiate response type in each call.
+>```console
+> remoteAddress:   Client address (read only string) (e.g.: "192.168.2.4")
+> remotePort:      Remote port (read only int)
+> requestName:     Request (read only string) (e.g.: "mail.example.com")
+> responseType:    Response type (read/write string) ("A", "AAAA", "NS", "MX", etc.)
+>                  Setted by default to the apporpiate response type in each call.
 > ```
 
 #### Best of both worlds
 Of course, you can combine both, dynamic matching and Lua scripting:
 
-```
+```zone
 /^text\d+/      IN  TXT     <?lua
 				return "Custom TXT for " ..
 						remoteAddress .. ":" ..
@@ -197,7 +197,7 @@ Of course, you can combine both, dynamic matching and Lua scripting:
 
 Another one. Set a catch-all record and do whatever you want with the data:
 
-```
+```zone
 /^.+/        IN  TXT        <?lua  
                                 local path = "/tmp/" .. remoteAddress .. ".txt"
                                 local file = io.open (path, "a")
