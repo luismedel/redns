@@ -15,7 +15,7 @@ namespace redns
 
         public override void WriteLine (string message)
         {
-            if (!_colors.TryGetValue (message.Substring (0, 6), out ConsoleColor color))
+            if (string.IsNullOrEmpty (message) || !_colors.TryGetValue (message.Substring (0, 6), out ConsoleColor color))
                 color = ConsoleColor.Gray;
 
             lock (_lockobj)
