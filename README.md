@@ -153,27 +153,30 @@ subdomain       IN  NS      <?lua
 If the record type expects more than one value (like in MX records, for example) you can use a table. Only remember to use the same order you would use in a zone file:
 ```zone
 example.com.    IN  MX      <?lua
-				-- MX => priority, hostname
-                                return { 10, "mail.example.com." }
-                            ?>
+    
+    -- MX => priority, hostname
+    return { 10, "mail.example.com." }
+?>
 ```
 
 A more complete MX output for example.com could be this:
 ```zone
 example.com.    IN  MX      <?lua
-                                return { 10, "mail.example.com." },
-                                       { 20, "mail2.example.com." },
-                                       { 30, "mai3.example.com." }
-                            ?>
+    
+    return { 10, "mail.example.com." },
+           { 20, "mail2.example.com." },
+           { 30, "mai3.example.com." }
+?>
 ```
 
 You can alter the response type within Lua (not all DNS clients support this, though). For example, lets change from A to TXT:
 
 ```zone
 subdomain2      IN  A       <?lua
-                                responseType = "TXT"
-                                return "I was an A record, but I switched to TXT!"
-                            ?>
+    
+    responseType = "TXT"
+    return "I was an A record, but I switched to TXT!"
+?>
 ```
 > FYI, there are 4 globals available for Lua scripts to use:
 >```console
@@ -188,22 +191,49 @@ subdomain2      IN  A       <?lua
 Of course, you can combine both, dynamic matching and Lua scripting:
 
 ```zone
-/^text\d+/      IN  TXT     <?lua
-				return "Custom TXT for " ..
-						remoteAddress .. ":" ..
-						remotePort
-                            ?>
+/^custom\d+/      IN  TXT   <?lua
+    
+    return "Custom TXT for " ..
+        remoteAddress .. ":" ..
+        remotePort  .. " = " .. requestName
+?>
 ```
 
 Another one. Set a catch-all record and do whatever you want with the data:
 
 ```zone
 /^.+/        IN  TXT        <?lua  
-                                local path = "/tmp/" .. remoteAddress .. ".txt"
-                                local file = io.open (path, "a")
-                                file:write (requestName)
-                                file:close ()
+    
+    local path = "/tmp/" .. remoteAddress .. ".txt"
+    local file = assert (io.open (path, "w"))
+    file:write (requestName)
+    file:close ()
 
-                                return "Your request was saved to disk"
-                            ?>
+    return "Your request was saved to '/tmp/" .. remoteAddress .. ".txt"
+?>
 ```
+
+And an usage example:
+
+```sh
+# dig @127.0.0.1 -p 5553 TXT save-this-text.example.com
+
+
+; <<>> DiG 9.16.1-Ubuntu <<>> @127.0.0.1 -p 5553 TXT save-this-text.example.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9964
+;; flags: qr aa rd ad; QUERY: 0, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: recursion requested but not available
+
+;; ANSWER SECTION:
+save-this-text.example.com. 0	IN	TXT	"Your request was saved to '/tmp/127.0.0.1.txt"
+
+;; Query time: 27 msec
+;; SERVER: 127.0.0.1#5553(127.0.0.1)
+;; WHEN: vie ene 28 11:30:00 CET 2022
+;; MSG SIZE  rcvd: 96
+```
+
+

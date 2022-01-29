@@ -20,24 +20,14 @@ namespace redns.Protocol.ResourceRecords
         public override int Size => this.Data.Length + 1;
         public override RecordType Type => RecordType.TXT;
 
-        public override void Deserialize (MessageStream s, int size)
-        {
-            this.Data = s.ReadPrefixedString ();
-        }
-
-        public override void Serialize (MessageStream s)
-        {
-            s.WritePrefixedString (this.Data, 255);
-        }
+        public override void Deserialize (MessageStream s, int size) => this.Data = s.ReadPrefixedString ();
+        public override void Serialize (MessageStream s) => s.WritePrefixedString (this.Data, 255);
 
         public override void ParseData (object data)
         {
-            if (data is string s)
-                this.Data = s;
-            else if (data is string[] array)
-                this.Data = array[0];
-            else
-                throw new InvalidDataException ($"Invalid TXT data '{data.ToString ()}'");
+            this.Data = data is string s ? s
+                        : data is string[] array ? array[0]
+                        : throw new InvalidDataException ($"Invalid TXT data '{data}'");
         }
     }
 }

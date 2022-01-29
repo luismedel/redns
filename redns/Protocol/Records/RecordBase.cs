@@ -36,7 +36,7 @@ namespace redns.Protocol.Records
         }
 
         public bool IsRegex => NameExpr != null;
-        public bool IsScript => Script != null;
+        public virtual bool IsScript => Script != null;
 
         public virtual bool IsUnique => true;
 
@@ -68,7 +68,7 @@ namespace redns.Protocol.Records
                                            : this.FQName.Equals (qname, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public IEnumerable<ResourceRecordBase> EvalQuery (Query query)
+        public virtual IEnumerable<ResourceRecordBase> EvalQuery (Query query)
         {
             if (Script != null)
             {
@@ -117,12 +117,9 @@ namespace redns.Protocol.Records
 
         object GetScriptValue (DynValue value)
         {
-            if (value.String != null)
-                return value.String;
-            else if (value.Table != null)
-                return value.Table.Values.Select (v => v.ToString ()).ToArray ();
-            else
-                return null;
+            return value.String != null  ? (object) value.String
+                   : value.Table != null ? value.Table.Values.Select (v => v.ToString ()).ToArray ()
+                   : null;
         }
 
         IEnumerable<object> EnumerateScriptResult (DynValue value)
@@ -136,7 +133,7 @@ namespace redns.Protocol.Records
                     yield return o;
             }
             else
-                throw new InvalidScriptOutput ($"Invalid output '{value.ToString ()}'");
+                throw new InvalidScriptOutput ($"Invalid output '{value}'");
         }
 
         public void SetScript (string script)

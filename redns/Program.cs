@@ -66,8 +66,8 @@ Where options can be:
 Call redns without arguments to start the default server:
 
   redns --zone .\zone.conf \
-        --bind udp:0.0.0.0:53 \
-        --bind tcp:0.0.0.0:53 \
+        --bind udp:0.0.0.0:5553 \
+        --bind tcp:0.0.0.0:5553 \
         --loglevel debug
 ");
         }
@@ -102,8 +102,8 @@ Call redns without arguments to start the default server:
 
                 host.Zones.Add (Zone.FromFile (@"zone.conf"));
 
-                host.Servers.Add (new UdpServer (IPAddress.Any, 53));
-                host.Servers.Add (new TcpServer (IPAddress.Any, 53));
+                host.Servers.Add (new UdpServer (IPAddress.Any, 5553));
+                host.Servers.Add (new TcpServer (IPAddress.Any, 5553));
             }
             else
             { 
