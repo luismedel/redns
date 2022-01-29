@@ -24,12 +24,11 @@ namespace redns.Protocol
         public UInt32 TTL { get; set; }
         public ResourceRecordBase ResourceRecord { get; private set; }
 
-        //public List<ResourceRecordBase> ResourceRecords { get; private set; } = new List<ResourceRecordBase> ();
-
         public RecordBase Record
         {
             get => _record;
-            set {
+            set
+            {
                 _record = value;
                 this.TTL = _record.TTL;
             }

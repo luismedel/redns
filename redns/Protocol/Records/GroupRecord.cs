@@ -19,12 +19,23 @@ namespace redns.Protocol.Records
     class GroupRecord
         : RecordBase
     {
+        public override bool IsScript => Records.Any (r => r.IsScript);
+
         public List<RecordBase> Records { get; private set; } = new List<RecordBase> ();
 
         public GroupRecord (Zone zone, string name, RecordClass @class, RecordType type, uint ttl, IEnumerable<RecordBase> records)
             : base (zone, name, @class, type, ttl)
         {
             this.Records.AddRange (records);
+        }
+
+        public override IEnumerable<ResourceRecordBase> EvalQuery (Query query)
+        {
+            foreach (var r in Records)
+            {
+                foreach (var rr in r.EvalQuery (query))
+                    yield return rr;
+            }
         }
 
         public override IEnumerable<ResourceRecordBase> GetResourceRecordsForQuery (Query query) => Records.SelectMany (record => record.GetResourceRecordsForQuery (query));

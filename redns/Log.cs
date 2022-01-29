@@ -1,7 +1,4 @@
-﻿
-
-using System.Diagnostics;
-/**
+﻿/**
 * 
 * This file is part of redns. A simple, regex-ready and scriptable
 * authoritative DNS server for toying, testing and red teaming.
@@ -12,6 +9,9 @@ using System.Diagnostics;
 * https://percibe.net
 * 
 */
+
+using System.Diagnostics;
+
 namespace redns
 {
     static class Log
