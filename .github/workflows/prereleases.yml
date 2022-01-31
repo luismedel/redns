@@ -1,0 +1,46 @@
+name: Pre-releases
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        net-version: [6.0.x]
+        platform: [win, linux, osx]
+        arch: [x64, arm, arm64]
+        exclude:
+          - platform: osx
+            arch: arm
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ matrix.net-version }}
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore 
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish -c Release -r ${{ matrix.platform }}-${{ matrix.arch }} -p:PublishTrimmed=true -p:PublishSingleFile=true -p:PublishReadyToRun=true --self-contained true --output ./${{ matrix.platform }}-${{ matrix.arch }}
+    - uses: "marvinpinto/action-automatic-releases@4edd7a5aabb1bc62e6dc99b3302d587bf3134e20"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ matrix.platform }}-${{ matrix.arch }}-latest"
+        prerelease: true
+        title: "${{ matrix.platform }}-${{ matrix.arch }} development build"
+        files: |
+          ./${{ matrix.platform }}-${{ matrix.arch }}/redns*
