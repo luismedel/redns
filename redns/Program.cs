@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -97,7 +98,11 @@ Call redns without arguments to start the default server:
 
             if (args.Length == 0)
             {
-                System.Diagnostics.Trace.Listeners.Add (new ConsoleTraceListener ());
+                var useColor = string.IsNullOrEmpty (Environment.GetEnvironmentVariable("NO_COLOR"));
+                var traceListener = useColor ? (TextWriterTraceListener) new ColorConsoleTraceListener()
+                                             : (TextWriterTraceListener) new ConsoleTraceListener();
+                Trace.Listeners.Add (traceListener);
+
                 Log.Info ("Starting default server...");
 
                 host.Zones.Add (Zone.FromFile (@"zone.conf"));
