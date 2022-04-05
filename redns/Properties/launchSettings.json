@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "redns (NO_COLOR)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "NO_COLOR": "1"
+      }
+    },
+    "redns": {
+      "commandName": "Project"
+    }
+  }
+}
